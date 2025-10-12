@@ -76,25 +76,30 @@ For classical baselines, **STFT and noise-estimation interfaces** are in place a
 Under cross-sample evaluation, the system shows **stable, substantial improvements** at the dataset level. The reconstructed spectrograms align more closely with references, with the **background noise floor effectively suppressed**. Consistency across **objective metrics** and **visualizations** supports a cleaner, more natural subjective impression and indicates **robust generalization** across diverse samples.  
 Analysis also reveals **areas for refinement**: a subset of cases exhibits mild **high-frequency over-suppression/over-smoothing**, motivating enhancements to **loss design** and **mask constraints**. We are prioritizing stronger **high-frequency fidelity**, **multi-resolution spectral losses**, and **phase-aware/complex-mask** modeling. We will also perform **grouped and distributional analyses** by degradation type/intensity and integrate **Wiener filtering** as a classical baseline for direct comparison. Where feasible, we will add **PESQ/STOI** or no-external-library proxies to further substantiate perceptual gains.
 
-### Dataset Mean (Noisy vs. Denoised)
+<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="398" height="395" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
+</p>
 
-<img width="398" height="395" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
+<h3 align="center">Dataset Std (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="404" height="412" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
+</p>
 
-### Dataset Std (Noisy vs. Denoised)
+<h3 align="center">Improvements (Denoised − Noisy) Mean</h3>
+<p align="center">
+  <img width="413" height="331" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
+</p>
 
-<img width="404" height="412" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
+<h3 align="center">Improvements (Denoised − Noisy) Std</h3>
+<p align="center">
+  <img width="424" height="338" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
+</p>
 
-### Improvements (Denoised − Noisy) Mean
-
-<img width="413" height="331" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
-
-### Improvements (Denoised − Noisy) Std
-
-<img width="424" height="338" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
-
-### Objective Metrics — Dataset Mean ± Std (no PESQ/STOI)
-
-<img width="615" height="371" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
+<h3 align="center">Objective Metrics — Dataset Mean ± Std (no PESQ/STOI)</h3>
+<p align="center">
+  <img width="615" height="371" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
+</p>
 
 
 ---
