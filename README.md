@@ -76,7 +76,23 @@ For classical baselines, **STFT and noise-estimation interfaces** are in place a
 Under cross-sample evaluation, the system shows **stable, substantial improvements** at the dataset level. The reconstructed spectrograms align more closely with references, with the **background noise floor effectively suppressed**. Consistency across **objective metrics** and **visualizations** supports a cleaner, more natural subjective impression and indicates **robust generalization** across diverse samples.  
 Analysis also reveals **areas for refinement**: a subset of cases exhibits mild **high-frequency over-suppression/over-smoothing**, motivating enhancements to **loss design** and **mask constraints**. We are prioritizing stronger **high-frequency fidelity**, **multi-resolution spectral losses**, and **phase-aware/complex-mask** modeling. We will also perform **grouped and distributional analyses** by degradation type/intensity and integrate **Wiener filtering** as a classical baseline for direct comparison. Where feasible, we will add **PESQ/STOI** or no-external-library proxies to further substantiate perceptual gains.
 
+### Dataset Mean (Noisy vs. Denoised)
+
 <img width="198" height="195" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
+
+### Dataset Std (Noisy vs. Denoised)
+
+<img width="204" height="212" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
+
+### Improvements (Denoised − Noisy) Mean
+
+<img width="213" height="131" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
+
+### Improvements (Denoised − Noisy) Std
+
+<img width="224" height="138" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
+
+<img width="415" height="171" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
 
 
 ---
