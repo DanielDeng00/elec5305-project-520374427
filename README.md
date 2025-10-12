@@ -94,7 +94,7 @@ Analysis also reveals **areas for refinement**: a subset of cases exhibits mild 
 
 ### Objective Metrics — Dataset Mean ± Std (no PESQ/STOI)
 
-<img width="515" height="271" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
+<img width="615" height="371" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
 
 
 ---
