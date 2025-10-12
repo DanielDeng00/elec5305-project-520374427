@@ -78,19 +78,19 @@ Analysis also reveals **areas for refinement**: a subset of cases exhibits mild 
 
 ### Dataset Mean (Noisy vs. Denoised)
 
-<img width="298" height="295" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
+<img width="398" height="395" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
 
 ### Dataset Std (Noisy vs. Denoised)
 
-<img width="204" height="212" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
+<img width="404" height="412" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
 
 ### Improvements (Denoised − Noisy) Mean
 
-<img width="213" height="131" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
+<img width="413" height="331" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
 
 ### Improvements (Denoised − Noisy) Std
 
-<img width="224" height="138" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
+<img width="424" height="338" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
 
 ### Objective Metrics — Dataset Mean ± Std (no PESQ/STOI)
 
