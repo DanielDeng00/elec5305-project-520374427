@@ -78,7 +78,7 @@ Analysis also reveals **areas for refinement**: a subset of cases exhibits mild 
 
 ### Dataset Mean (Noisy vs. Denoised)
 
-<img width="198" height="195" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
+<img width="298" height="295" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
 
 ### Dataset Std (Noisy vs. Denoised)
 
