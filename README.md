@@ -16,85 +16,86 @@ GitHub Project Link: https://github.com/DanielDeng00/elec5305-project-520374427.
 ---
 
 ## 📝 Project Overview  
-Remote speech transmission is highly susceptible to various sources of degradation, such as **background noise, packet loss, echo, and channel distortion**. These issues often result in speech signals that are muffled, distorted, or difficult to comprehend.  
+Remote speech transmission is highly susceptible to degradations such as **background noise, packet loss, echo, and channel distortion**, often yielding speech that is muffled, distorted, or hard to understand. This affects everyday communication and poses challenges to **remote education, telemedicine, and collaborative work**.  
 
-Such degradation not only reduces the quality of everyday online communication but also creates serious challenges for critical applications such as **remote education, telemedicine, and collaborative work**. Addressing this problem is therefore both practically relevant and academically significant.  
+This project develops a **speech restoration system** using modern deep learning. We target recovery of speech degraded during long-distance transmission. By employing models such as **convolutional autoencoders** and **Transformer/Conformer-based architectures**, we aim to reconstruct **intelligible, perceptually natural** speech that is closer to the original signal.
 
-The goal of this project is to develop a **speech restoration system** using modern deep learning techniques. Specifically, the system will focus on recovering degraded speech signals that have been distorted during long-distance transmission. By employing neural network models such as **convolutional autoencoders** and **Transformer-based architectures**, the project aims to reconstruct intelligible and perceptually natural speech, providing a listening experience that is closer to the original signal.  
+---
+
+## 📦 Data Source  
+We use the **VoiceBank-DEMAND** dataset hosted by the University of Edinburgh’s DataShare (link: <https://datashare.ed.ac.uk/handle/10283/2791>). It combines clean utterances (VoiceBank) with **DEMAND** environmental noises to produce noisy speech across varied SNRs and scenes, and is widely used for speech restoration research. A common configuration uses ~28 speakers for training and 2 for testing with **non-overlapping noises/SNRs** to assess generalization.  
+The official release is **48 kHz**; in practice we **resample to 16 kHz**, normalize amplitude, and segment audio as needed. During training, we **stochastically superimpose remote-transmission degradations**—including packet loss (with PLC variants), echo/residual reverberation, bandwidth limiting and channel magnitude–frequency distortion, and common codec artifacts—to better approximate real-world conditions.
 
 ---
 
 ## 🎯 Background and Motivation  
-Traditional speech enhancement and restoration techniques have relied heavily on classical digital signal processing methods, such as **spectral subtraction, Wiener filtering, and statistical noise modeling**. While these methods can effectively reduce simple additive noise, they often fail to handle more complex and nonlinear distortions caused by channel fading, packet loss, and bandwidth constraints.  
+Classical speech enhancement (e.g., **spectral subtraction, Wiener filtering, statistical noise modeling**) can reduce simple additive noise, but often struggles with **nonlinear, structural** degradations from channel fading, packet loss, and bandwidth limits.  
 
-Recent advances in **deep learning** have transformed the field of speech enhancement. Neural networks, particularly convolutional and recurrent models, have demonstrated an impressive ability to learn **time–frequency structures** and recover missing or corrupted speech components. More recently, **Transformer-based architectures** have emerged as powerful alternatives for modeling long-term dependencies in audio signals [1].  
-
-The motivation for selecting this topic lies in both **academic value** and **practical impact**:  
-- From an academic perspective, the project will explore advanced deep learning techniques in an applied domain, bridging **machine learning, signal processing, and communication systems**.  
-- From a practical perspective, the outcome could contribute to more **robust and reliable online communication systems**, with direct applications in **teleconferencing, distance learning, and healthcare**.  
+Deep learning has transformed the field: convolutional/recurrent networks learn **time–frequency structures** and recover corrupted components; more recently, **Transformer-based architectures** capture long-term dependencies in audio [1]. This creates an opportunity to design systems tailored to **remote transmission** challenges, where degradations are not merely additive.
 
 ---
 
 ## ⚙️ Proposed Methodology  
-This project will be implemented entirely in **MATLAB**, which provides a comprehensive set of toolboxes for both signal processing and machine learning. MATLAB will handle the **complete workflow**, including preprocessing, baseline experiments with classical filtering, and the implementation of neural network models.  
+This project is implemented entirely in **Python**, enabling a cohesive workflow for signal processing, baselines, training, visualization, and evaluation.
 
-1. **Signal Processing**  
-   - Apply **Short-Time Fourier Transform (STFT)** [2] to convert time-domain speech signals into spectrograms.  
-   - Implement **Wiener filtering** as a baseline reference system.  
-   - Compare the baseline with deep learning methods to highlight improvements.  
+1. **Signal Processing**
+   - Use **Short-Time Fourier Transform (STFT)** [2] to obtain spectrograms.
+   - Implement **Wiener filtering** as a classical baseline within a unified evaluation pipeline.
 
-2. **Machine Learning Models**  
-   - **Phase 1**: Implement a **convolutional autoencoder** for mapping degraded to clean spectrograms.  
-   - **Phase 2**: Explore **advanced deep architectures** (e.g., Transformer-based) to model long-term dependencies in audio [3].  
-   - Evaluate models for perceptual clarity and intelligibility.  
+2. **Neural Models**
+   - **Phase 1**: A **U-Net–style convolutional autoencoder** estimates time–frequency (T–F) masks on **log-magnitude** spectra.
+   - **Phase 2**: Explore **Transformer/Conformer** blocks for modeling long-range dependencies [1], maintaining drop-in compatibility.
 
-3. **Datasets**  
-   - Use **publicly available online datasets** combined with a **self-constructed recorded dataset**.  
-   - Simulate **real-world degradations** such as packet loss, additive noise, channel attenuation, and echo.  
-   - Ensure evaluation reflects realistic communication scenarios.  
+3. **Training & Inference**
+   - Loss: **SI-SDR** (primary) + **log-spectral MSE**, with gradient clipping and spatial padding/alignment to stabilize training.
+   - Reconstruction via **iSTFT** using estimated magnitude and noisy phase (with extensions planned for phase-aware/complex masks).
+
+4. **Evaluation**
+   - Visualizations: **waveforms** and **log-power spectrograms**.
+   - Objective metrics (no external toolboxes required): **SI-SDR**, **Segmental SNR (20 ms)**, **LSD**, **Mel-LSD**, **Spectral Convergence**.
+   - Side-by-side reporting for **Noisy → Denoised → Clean**.
+
+---
+
+## 🧪 Methodology Progress  
+We have completed an **end-to-end Python prototype**. On the data side, we implemented **multi-source degradation simulation** for remote scenarios: additive background noise, packet loss (including burst losses and PLC strategies such as muting, zero-filling, and frame-hold), echo/residual reverberation, bandwidth limiting and channel magnitude–frequency distortion, and common codec artifacts. These degradations are **stochastically combined online** during training to better match real-world network speech.  
+For representation, we use **STFT** and feed the **log-magnitude spectrogram** to a **U-Net–style** model to estimate a T–F mask; **iSTFT** reconstructs waveforms from the estimated magnitude with noisy phase. The training pipeline employs **SI-SDR + log-spectral MSE**, gradient clipping, and mask padding/alignment for stability. Our evaluation suite includes waveform/spectrogram plots and objective metrics (**SI-SDR, Segmental SNR, LSD, Mel-LSD, Spectral Convergence**) for **Noisy → Denoised → Clean** comparisons.  
+For classical baselines, **STFT and noise-estimation interfaces** are in place and **Wiener filtering** will be run in the same evaluation pipeline. We have also **reserved interfaces/data feeders** for **Transformer/Conformer** modules, enabling fast swaps and reproducible experiments.
 
 ---
 
 ## 🎯 Expected Outcomes  
-- A **working prototype** that restores degraded speech signals to significantly improved quality.  
-- Input: distorted remote speech → Output: enhanced speech.  
-- Evaluation metrics:  
-  - **Signal-to-Noise Ratio (SNR) improvement**  
-  - **Perceptual Evaluation of Speech Quality (PESQ)**  
-  - **Short-Time Objective Intelligibility (STOI)**  
-- A **public GitHub repository** containing:  
-  - Full **source code**  
-  - **Audio demonstrations**  
-  - **Documentation** for reproducibility and further research  
+- A **working prototype** that restores degraded speech to higher perceptual quality.  
+- Straight-through workflow: **Input (degraded)** → **Model** → **Output (enhanced)**.  
+- Evaluation uses objective and, where feasible, perceptual metrics (or well-founded proxies) and includes **reproducible demos**.  
+- A **public repository** with source code, audio examples, and documentation for reproducibility and further research.
 
 ---
 
-## ⏱️ Timeline (Weeks 5–13)  
+## 📈 Outcomes Progress  
+Under cross-sample evaluation, the system shows **stable, substantial improvements** at the dataset level. The reconstructed spectrograms align more closely with references, with the **background noise floor effectively suppressed**. Consistency across **objective metrics** and **visualizations** supports a cleaner, more natural subjective impression and indicates **robust generalization** across diverse samples.  
+Analysis also reveals **areas for refinement**: a subset of cases exhibits mild **high-frequency over-suppression/over-smoothing**, motivating enhancements to **loss design** and **mask constraints**. We are prioritizing stronger **high-frequency fidelity**, **multi-resolution spectral losses**, and **phase-aware/complex-mask** modeling. We will also perform **grouped and distributional analyses** by degradation type/intensity and integrate **Wiener filtering** as a classical baseline for direct comparison. Where feasible, we will add **PESQ/STOI** or no-external-library proxies to further substantiate perceptual gains.
+
+---
+
+## ⏱️ Timeline (Weeks 5–13)
 
 | Weeks       | Tasks                                                                 |
-|-------------|----------------------------------------------------------------------|
-| **5–7**     | Literature review, dataset collection, and baseline Wiener filtering. |
-| **8–9**     | Implement convolutional autoencoder, conduct feasibility tests.       |
-| **10–11**   | Model optimization, hyperparameter tuning, explore Transformers.      |
-| **12–13**   | Final report, GitHub documentation, and audio demo preparation.       |
+|-------------|------------------------------------------------------------------------|
+| **5–7**     | Literature review; dataset preparation; baseline Wiener setup.         |
+| **8–9**     | Implement U-Net–style model; preliminary feasibility tests.            |
+| **10–11**   | Optimization & evaluation; explore Transformer/Conformer variants.     |
+| **12–13**   | Final report; GitHub docs; audio demos and release packaging.          |
 
 ---
 
 ## ✅ Conclusion  
-This project addresses a critical challenge in modern communication systems: the **degradation of speech quality during remote transmission**. By combining **traditional signal processing** with **advanced deep learning architectures**, the proposed work aims to restore intelligibility and perceptual quality in degraded speech signals.  
-
-The expected contributions include:  
-- A **working prototype**  
-- **Objective performance improvements**  
-- **Open-source documentation** for the academic and industrial community  
-
-Ultimately, the project has the potential to improve the **robustness and accessibility of remote communication technologies** in an increasingly connected world.  
+This project addresses the **multi-source degradations** of remote speech transmission with a prototype that unifies **traditional signal processing** and **deep learning**. The current system demonstrates **clear dataset-level effectiveness** and a consistent trend toward **cleaner, more natural** speech, supported by objective metrics and visual validation. Ongoing work focuses on preserving **high-frequency detail**, broadening **grouped/distributional evaluations**, and integrating **classical baselines** and **perceptual indicators** for completeness. With continued refinements, we anticipate further gains in **clarity** and **naturalness**, alongside reproducible resources of practical value to research and industry.
 
 ---
 
 ## 📚 References  
-[1] Yu, Weiwei, et al. *SETransformer: Speech enhancement transformer.* Cognitive Computation 14.3 (2022): 1152-1158.  
-[2] Wang, Zhong-Qiu, et al. *STFT-domain neural speech enhancement with very low algorithmic latency.* IEEE/ACM Transactions on Audio, Speech, and Language Processing 31 (2022): 397-410.  
-[3] Oruh, Jane, and Serestina Viriri. *Spectral analysis for automatic speech recognition and enhancement.* International Conference on Machine Learning for Networking. Springer, 2020.  
+[1] Yu, W., et al. *SETransformer: Speech Enhancement Transformer.* Cognitive Computation 14(3), 2022.  
+[2] Wang, Z.-Q., et al. *STFT-domain Neural Speech Enhancement with Very Low Algorithmic Latency.* IEEE/ACM TASLP 31, 2022.  
+[3] Oruh, J., & Viriri, S. *Spectral Analysis for Automatic Speech Recognition and Enhancement.* Proc. ICMlN, 2020.
 
----
