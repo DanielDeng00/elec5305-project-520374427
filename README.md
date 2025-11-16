@@ -143,9 +143,62 @@ Training uses spectral MSE, downmix SI-SDR, and ILD loss. The final stereo audio
 
 ---
 
-## 📈 Outcomes Progress  
-Under cross-sample evaluation, the system shows **stable, substantial improvements** at the dataset level. The reconstructed spectrograms align more closely with references, with the **background noise floor effectively suppressed**. Consistency across **objective metrics** and **visualizations** supports a cleaner, more natural subjective impression and indicates **robust generalization** across diverse samples.  
-Analysis also reveals **areas for refinement**: a subset of cases exhibits mild **high-frequency over-suppression/over-smoothing**, motivating enhancements to **loss design** and **mask constraints**. We are prioritizing stronger **high-frequency fidelity**, **multi-resolution spectral losses**, and **phase-aware/complex-mask** modeling. We will also perform **grouped and distributional analyses** by degradation type/intensity and integrate **Wiener filtering** as a classical baseline for direct comparison. Where feasible, we will add **PESQ/STOI** or no-external-library proxies to further substantiate perceptual gains.
+## 📈 Outcomes Progress
+
+The updated results show that the proposed two-stage system provides strong and stable
+performance across both denoising and spatialization tasks.
+
+### Stage 1 — Speech Restoration
+Across the four evaluation samples, the Transformer-based denoiser achieves:
+
+- **SI-SDR improvements** of **+5.96 to +7.44 dB** (avg. **+6.95 dB**)  
+- **Segmental-SNR gains** of **+9.00 to +13.21 dB**  
+- **Large reductions** in LSD, mel-LSD, and SpecConv  
+- **Strong negative MCD shifts** (−138 to −213 dB), indicating accurate recovery of formants  
+- **Major outperformance** over the classical Wiener baseline (**+1.17 dB SI-SDR**)
+
+Waveform and spectrogram comparisons show significant noise-floor suppression, clearer
+harmonics, and restored transient structure. The denoised outputs visually converge toward
+clean targets while avoiding artifacts or spectral holes.
+
+<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="1227" height="954" alt="P1" src="https://github.com/user-attachments/assets/0487102f-a7ee-4a3c-88ee-7117815b61f5" />
+</p>
+
+<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="1214" height="312" alt="P1-1" src="https://github.com/user-attachments/assets/0148f79f-ff30-45f1-8dd0-9f66ec8fe841" />
+</p>
+
+### Stage 2 — Spatialization
+The hybrid neural–DSP spatialization yields physically coherent stereo output:
+
+- **ILD_RMSE**: 0.86–1.20 dB  
+- **IPD_L1**: 1.44–1.47 rad  
+- **ΔIACC(pred–tgt)**: −0.053 to −0.130, indicating close spatial coherence  
+- **ΔSI-SDR**: −2.31 to −14.88 dB (expected for mono → stereo conversion)
+
+Frequency-domain comparisons confirm that ILD and IPD curves closely follow the teacher
+stereo patterns. IACC-per-frame plots show stable coherence, with small deviations during
+high-energy formant transitions.
+
+<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="1692" height="759" alt="P2" src="https://github.com/user-attachments/assets/0989402e-05c0-4250-8ce4-8bc7fd4b0e59" />
+</p>
+
+<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<p align="center">
+  <img width="1737" height="456" alt="P2-1" src="https://github.com/user-attachments/assets/787e58ab-7e1c-4e5a-b124-3fdf323a9dc2" />
+</p>
+
+### Summary
+Overall, the system reliably restores degraded speech and generates spatially meaningful
+stereo audio. Minor limitations remain—such as high-frequency over-smoothing and narrow-band
+ILD fluctuations—pointing toward future improvements using multi-resolution spectral losses,
+frequency-dependent constraints, and refined phase modeling.
+
 
 <h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
 <p align="center">
