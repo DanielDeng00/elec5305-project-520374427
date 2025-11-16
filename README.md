@@ -214,7 +214,37 @@ frequency-dependent constraints, and refined phase modeling.
 ---
 
 ## ✅ Conclusion  
-This project addresses the **multi-source degradations** of remote speech transmission with a prototype that unifies **traditional signal processing** and **deep learning**. The current system demonstrates **clear dataset-level effectiveness** and a consistent trend toward **cleaner, more natural** speech, supported by objective metrics and visual validation. Ongoing work focuses on preserving **high-frequency detail**, broadening **grouped/distributional evaluations**, and integrating **classical baselines** and **perceptual indicators** for completeness. With continued refinements, we anticipate further gains in **clarity** and **naturalness**, alongside reproducible resources of practical value to research and industry.
+This project introduces a two-stage framework for restoring and spatializing speech degraded
+by long-distance transmission. By combining lightweight Transformer-based speech restoration
+with classical DSP-driven stereo cue reconstruction, the system achieves both **high-quality
+denoising** and **physically consistent spatialization**.
+
+In Stage 1, the Transformer model demonstrates robust performance across diverse channel
+impairments—including broadband noise, narrowband interference, codec-style distortions, and
+mixed degradation patterns. The restored speech exhibits a cleaner temporal envelope, clearer
+harmonic structure, and improved spectral readability. Objective evaluations (SI-SDR,
+Segmental-SNR, LSD, mLSD, MCD, SpecConv) show **consistent and substantial improvements**,
+confirming the model’s ability to suppress non-speech energy while preserving linguistically
+important details.
+
+Stage 2 operates on the cleaned mono signal and reconstructs binaural cues by combining
+neural magnitude estimation with classical ITD/IPD-based phase synthesis. The resulting stereo
+signals exhibit **accurate ILD patterns, plausible low-frequency phase behavior, and stable
+interaural correlation**, closely matching the reference stereo. Spatialization metrics across
+samples validate the reliability of the stereo reconstruction. The expected SI-SDR drop during
+mono-to-stereo conversion reflects the intentional introduction of interaural differences rather
+than a loss of perceptual quality.
+
+Together, these findings show that the proposed framework effectively unifies **deep neural
+representations** with **interpretable, physically grounded signal processing**. The system is
+capable of converting severely degraded remote speech into **clean, natural, and perceptually
+stable binaural audio**, offering a scalable and computationally efficient solution for remote
+communication, telepresence, assistive listening, virtual reality audio, and other immersive
+applications.
+
+Future work will explore **higher-resolution spatial synthesis**, **cross-domain stereo transfer
+learning**, and **perceptually informed optimization**, building on the foundation established
+by this prototype.
 
 ---
 
