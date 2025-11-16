@@ -161,12 +161,12 @@ Waveform and spectrogram comparisons show significant noise-floor suppression, c
 harmonics, and restored transient structure. The denoised outputs visually converge toward
 clean targets while avoiding artifacts or spectral holes.
 
-<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<h3 align="center">Waveform and Spectrogram Comparison for Denoised Speech(sample)</h3>
 <p align="center">
   <img width="1227" height="954" alt="P1" src="https://github.com/user-attachments/assets/0487102f-a7ee-4a3c-88ee-7117815b61f5" />
 </p>
 
-<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<h3 align="center">Lightweight Transformer Noise Reduction Data Analysis Comparison Results</h3>
 <p align="center">
   <img width="1214" height="312" alt="P1-1" src="https://github.com/user-attachments/assets/0148f79f-ff30-45f1-8dd0-9f66ec8fe841" />
 </p>
@@ -183,12 +183,12 @@ Frequency-domain comparisons confirm that ILD and IPD curves closely follow the 
 stereo patterns. IACC-per-frame plots show stable coherence, with small deviations during
 high-energy formant transitions.
 
-<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<h3 align="center">Frequency-Domain Spatialization Analysis (ILD, IPD, and IACC)(sample)</h3>
 <p align="center">
   <img width="1692" height="759" alt="P2" src="https://github.com/user-attachments/assets/0989402e-05c0-4250-8ce4-8bc7fd4b0e59" />
 </p>
 
-<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
+<h3 align="center">Lightweight ResFCS Spatialization Data Analysis Comparison Results</h3>
 <p align="center">
   <img width="1737" height="456" alt="P2-1" src="https://github.com/user-attachments/assets/787e58ab-7e1c-4e5a-b124-3fdf323a9dc2" />
 </p>
@@ -198,32 +198,6 @@ Overall, the system reliably restores degraded speech and generates spatially me
 stereo audio. Minor limitations remain—such as high-frequency over-smoothing and narrow-band
 ILD fluctuations—pointing toward future improvements using multi-resolution spectral losses,
 frequency-dependent constraints, and refined phase modeling.
-
-
-<h3 align="center">Dataset Mean (Noisy vs. Denoised)</h3>
-<p align="center">
-  <img width="398" height="395" alt="image" src="https://github.com/user-attachments/assets/64e15cba-af58-4f04-8deb-aedb3bddf30d" />
-</p>
-
-<h3 align="center">Dataset Std (Noisy vs. Denoised)</h3>
-<p align="center">
-  <img width="404" height="412" alt="image" src="https://github.com/user-attachments/assets/59738895-20a9-47e5-abd7-6c2d79bce950" />
-</p>
-
-<h3 align="center">Improvements (Denoised − Noisy) Mean</h3>
-<p align="center">
-  <img width="413" height="331" alt="image" src="https://github.com/user-attachments/assets/7f37e681-72c4-46a6-9b75-8a4fc9b9a7c9" />
-</p>
-
-<h3 align="center">Improvements (Denoised − Noisy) Std</h3>
-<p align="center">
-  <img width="424" height="338" alt="image" src="https://github.com/user-attachments/assets/c038ad69-91d9-4392-8b3a-ef0476014c3f" />
-</p>
-
-<h3 align="center">Objective Metrics — Dataset Mean ± Std (no PESQ/STOI)</h3>
-<p align="center">
-  <img width="615" height="371" alt="image" src="https://github.com/user-attachments/assets/915abb69-6efa-4b29-8b67-17918faf8c6d" />
-</p>
 
 
 ---
