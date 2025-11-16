@@ -83,8 +83,8 @@ introduces:
 - colored noise and shuffled-speech leakage  
 - frame-level random and burst packet loss with PLC-style reconstruction  
 
-The degraded waveform is converted to **log-magnitude STFT features**, and a lightweight
-**Transformer-based model** predicts a magnitude mask. The enhanced magnitude is combined
+The degraded waveform is converted to **log-magnitude STFT features**[2], and a lightweight
+**Transformer-based model**[1] predicts a magnitude mask. The enhanced magnitude is combined
 with the noisy phase and reconstructed using iSTFT. Training minimizes a multi-term loss:
 
 - log-spectral MSE  
