@@ -14,11 +14,41 @@ GitHub Username: DanielDeng00
 GitHub Project Link: https://github.com/DanielDeng00/elec5305-project-520374427.git
 
 ---
+  
+## 📝 Project Overview
 
-## 📝 Project Overview  
-Remote speech transmission is highly susceptible to degradations such as **background noise, packet loss, echo, and channel distortion**, often yielding speech that is muffled, distorted, or hard to understand. This affects everyday communication and poses challenges to **remote education, telemedicine, and collaborative work**.  
+This repository implements a two-stage deep learning pipeline for **restoring** and **spatializing** speech degraded during long-distance transmission. Real communication channels introduce complex distortions—such as **bandwidth restriction, codec artifacts, echo, colored noise, and packet loss**—which significantly reduce intelligibility and perceptual quality.
 
-This project develops a **speech restoration system** using modern deep learning. We target recovery of speech degraded during long-distance transmission. By employing models such as **convolutional autoencoders** and **Transformer/Conformer-based architectures**, we aim to reconstruct **intelligible, perceptually natural** speech that is closer to the original signal.
+### Stage 1 — Remote Speech Restoration  
+Stage 1 uses a **lightweight Transformer-based denoising model** operating in the STFT magnitude domain.  
+A custom **RemoteChannelAugmentor** simulates realistic remote-channel impairments, including:
+- low-bitrate codec and µ-law artifacts  
+- narrowband filtering  
+- multi-tap echo and residual reverberation  
+- colored background noise and speechbleed  
+- random + burst packet loss with basic PLC reconstruction  
+
+The network is trained with spectral and time-domain losses (log-MSE, L1, SI-SDR), producing a clean and perceptually natural **mono** signal suitable for downstream processing.
+
+### Stage 2 — Neural-Classical Hybrid Spatialization  
+Stage 2 reconstructs spatial cues and generates **binaural stereo** audio from the restored mono signal.  
+The system adopts a hybrid approach:
+- The neural network predicts **interaural level differences (ILD)**.  
+- **Interaural time/phase differences (ITD/IPD)** are synthesized using DSP techniques:
+  - GCC-PHAT delay estimation  
+  - low-frequency phase regression  
+  - frequency-dependent IPD modulation  
+  - smoothing and energy-protection filters  
+
+This design avoids unstable learned-phase models and ensures physically coherent, realistic spatialization.
+
+### Outcome  
+The full pipeline transforms degraded input into clean, intelligible, and spatially immersive stereo audio.  
+Its modular neural-DSP design makes it suitable for:
+- remote communication and VoIP  
+- conferencing and telepresence  
+- accessibility tools  
+- multimedia and interactive audio applications
 
 ---
 
