@@ -63,12 +63,22 @@ For representation, we use **STFT** and feed the **log-magnitude spectrogram** t
 For classical baselines, **STFT and noise-estimation interfaces** are in place and **Wiener filtering** will be run in the same evaluation pipeline. We have also **reserved interfaces/data feeders** for **Transformer/Conformer** modules, enabling fast swaps and reproducible experiments.
 
 ---
+  
+## 🎯Stage-1 and Stage-2 Code Workflow
 
-## 🎯 Expected Outcomes  
-- A **working prototype** that restores degraded speech to higher perceptual quality.  
-- Straight-through workflow: **Input (degraded)** → **Model** → **Output (enhanced)**.  
-- Evaluation uses objective and, where feasible, perceptual metrics (or well-founded proxies) and includes **reproducible demos**.  
-- A **public repository** with source code, audio examples, and documentation for reproducibility and further research.
+The two-stage speech enhancement system consists of Stage-1 speech restoration and Stage-2 spatialization. Stage-1 reconstructs clean monaural speech from remote-channel degraded audio, and Stage-2 transforms the restored signal into perceptually natural stereo. Both stages are implemented with modular code components that cover data preparation, model definition, training, evaluation, and visualization.
+
+### Stage-1: Remote-Channel Speech Restoration
+Stage-1 begins by standardizing audio input to 16 kHz and ensuring compatibility between different library versions. A remote-channel degradation module generates realistic noisy speech by applying bandwidth limitation, codec artifacts, colored noise, shuffled-speech interference, echo, and burst packet loss. Clean targets are refined through a perceptual enhancer that applies A-weighted loudness shaping, formant emphasis, and ERB smoothing. The dataset loader pairs noisy and clean audio and performs random segment extraction to increase data diversity.
+
+A compact Transformer model takes log-magnitude STFT features and predicts a spectral mask to recover the clean magnitude. Training incorporates spectral MSE, time-domain L1, SI-SDR, and mask smoothness losses. Validation is performed after each epoch, and visualization tools display waveform comparisons, spectrograms, and objective metrics to demonstrate restoration performance.
+
+### Stage-2: Mono-to-Stereo Spatialization
+Stage-2 uses the enhanced monaural speech as input and generates stereo output. A clean-to-stereo teacher dataset is constructed by passing clean audio through a stereo teacher model. A unified STFT front end converts monaural signals into log-magnitude spectrograms, and a consistent ISTFT front end ensures accurate reconstruction.
+
+The ResFCSpatializer model applies frame-wise residual MLP blocks to predict left and right magnitude masks, controlling ILD. Phase cues are not learned; instead, a DSP-based phase synthesis module generates IPD and ITD. This module estimates or defines a time delay τ(t), converts it into frequency-dependent phase shifts, and applies smoothing. Low-frequency regions receive stronger phase rotation to match psychoacoustic properties.
+
+Training uses spectral MSE, downmix SI-SDR, and ILD loss. The final stereo audio is reconstructed by combining network-predicted magnitudes with DSP-generated phase. Evaluation includes ILD alignment, IPD deviation, IACC behavior, and downmix SI-SDR, with plotting tools for visualization. Together, Stage-2 blends learned magnitude cues with deterministic phase control to produce natural and interpretable stereo output.
 
 ---
 
