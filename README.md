@@ -65,32 +65,63 @@ Deep learning has transformed the field: convolutional/recurrent networks learn 
 
 ---
 
-## ⚙️ Proposed Methodology  
-This project is implemented entirely in **Python**, enabling a cohesive workflow for signal processing, baselines, training, visualization, and evaluation.
+## ⚙️ Methodology
 
-1. **Signal Processing**
-   - Use **Short-Time Fourier Transform (STFT)** [2] to obtain spectrograms.
-   - Implement **Wiener filtering** as a classical baseline within a unified evaluation pipeline.
+This project adopts a two-stage deep learning framework that restores long-distance
+transmission–degraded speech and subsequently generates a spatially coherent stereo output.
+Both stages share a unified STFT front end and are implemented entirely in Python using
+PyTorch to maintain consistency across preprocessing, augmentation, training, and evaluation.
 
-2. **Neural Models**
-   - **Phase 1**: A **U-Net–style convolutional autoencoder** estimates time–frequency (T–F) masks on **log-magnitude** spectra.
-   - **Phase 2**: Explore **Transformer/Conformer** blocks for modeling long-range dependencies [1], maintaining drop-in compatibility.
+### Stage 1 — Remote Speech Restoration
+Clean speech from the VoiceBank-DEMAND dataset is transformed into realistic remote-channel
+degraded signals using a custom **RemoteChannelAugmentor**. The augmentation pipeline
+introduces:
 
-3. **Training & Inference**
-   - Loss: **SI-SDR** (primary) + **log-spectral MSE**, with gradient clipping and spatial padding/alignment to stabilize training.
-   - Reconstruction via **iSTFT** using estimated magnitude and noisy phase (with extensions planned for phase-aware/complex masks).
+- bandwidth limitation and low-rate codec distortion  
+- µ-law companding and resampling artifacts  
+- multi-tap echo and residual reverberation  
+- colored noise and shuffled-speech leakage  
+- frame-level random and burst packet loss with PLC-style reconstruction  
 
-4. **Evaluation**
-   - Visualizations: **waveforms** and **log-power spectrograms**.
-   - Objective metrics (no external toolboxes required): **SI-SDR**, **Segmental SNR (20 ms)**, **LSD**, **Mel-LSD**, **Spectral Convergence**.
-   - Side-by-side reporting for **Noisy → Denoised → Clean**.
+The degraded waveform is converted to **log-magnitude STFT features**, and a lightweight
+**Transformer-based model** predicts a magnitude mask. The enhanced magnitude is combined
+with the noisy phase and reconstructed using iSTFT. Training minimizes a multi-term loss:
 
----
+- log-spectral MSE  
+- SI-SDR  
+- time-domain L1 loss  
+- mask smoothness regularization  
 
-## 🧪 Methodology Progress  
-We have completed an **end-to-end Python prototype**. On the data side, we implemented **multi-source degradation simulation** for remote scenarios: additive background noise, packet loss (including burst losses and PLC strategies such as muting, zero-filling, and frame-hold), echo/residual reverberation, bandwidth limiting and channel magnitude–frequency distortion, and common codec artifacts. These degradations are **stochastically combined online** during training to better match real-world network speech.  
-For representation, we use **STFT** and feed the **log-magnitude spectrogram** to a **U-Net–style** model to estimate a T–F mask; **iSTFT** reconstructs waveforms from the estimated magnitude with noisy phase. The training pipeline employs **SI-SDR + log-spectral MSE**, gradient clipping, and mask padding/alignment for stability. Our evaluation suite includes waveform/spectrogram plots and objective metrics (**SI-SDR, Segmental SNR, LSD, Mel-LSD, Spectral Convergence**) for **Noisy → Denoised → Clean** comparisons.  
-For classical baselines, **STFT and noise-estimation interfaces** are in place and **Wiener filtering** will be run in the same evaluation pipeline. We have also **reserved interfaces/data feeders** for **Transformer/Conformer** modules, enabling fast swaps and reproducible experiments.
+The target signal is a **perceptually enhanced mono reference** obtained through A-weighting,
+ERB smoothing, and high-frequency presence boosting.
+
+### Stage 2 — Neural–Classical Hybrid Spatialization
+Stage 2 takes the restored mono waveform and produces binaural stereo audio. Instead of
+learning complex phase, the system uses a **hybrid neural–DSP design**:
+
+- A **ResFC (residual MLP)** predicts left/right magnitude masks encoding ILD.
+- **ITD/IPD** cues are extracted from a stereo teacher using:
+  - GCC-PHAT delay estimation  
+  - low-frequency phase regression  
+  - frequency-dependent phase weighting  
+  - temporal EMA smoothing  
+
+The predicted magnitudes and DSP-generated phase cues form stereo STFTs, which are
+reconstructed via iSTFT. Training optimizes:
+
+- log-spectral MSE  
+- downmix SI-SDR  
+- frequency-band ILD loss  
+
+Evaluation includes ILD, IPD, IACC, and objective quality metrics to verify spatial fidelity
+and ensure the stereo output remains consistent with the teacher in both energy distribution
+and phase structure.
+
+### Summary
+Stage 1 restores intelligible mono speech under severe degradations, and Stage 2 reconstructs
+realistic spatial cues using a physically interpretable stereo synthesis approach. Together, the
+system converts harsh remote-channel speech into high-quality, natural, and spatially immersive
+audio.
 
 ---
   
